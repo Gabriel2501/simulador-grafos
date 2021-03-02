@@ -1,0 +1,23 @@
+<div id="content-container" (click)="novoVertice($event)">
+    <div *ngIf="vertices$ | async as vertices">
+        <div *ngFor="let vertice of vertices"
+            [ngStyle]="{'position': 'absolute', 'margin-left': vertice.offsetX+'px', 'margin-top': vertice.offsetY+'px','z-index':'1'}">
+            <button [id]="'id'+vertice.id" mat-fab (click)="selecionarVertice(vertice)">
+                {{vertice?.label}}
+            </button>
+        </div>
+    </div>
+    <div *ngIf="arestas$ | async as arestas">
+        <div *ngFor="let aresta of arestas" [ngStyle]="{
+                'position': 'absolute', 
+                'margin-left': aresta.offsetX+'px', 
+                'margin-top': aresta.offsetY+aresta.additionalOffsetY+'px', 
+                'width': aresta.comprimento+'px', 
+                'height': '5px', 
+                'background-color': 'black', 
+                'transform': 'rotate(-'+aresta.angulo+'deg)', 
+                'z-index': '0'
+            }">
+        </div>
+    </div>
+</div>
