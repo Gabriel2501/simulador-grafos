@@ -78,6 +78,8 @@ export class StatsService {
     if (index1 != -1 && index2 != -1) {
       if (!this.arestas.find(aresta => aresta.labelVertice1 == this.vertices[index1].label && aresta.labelVertice2 == this.vertices[index2].label)) {
 
+        let conexaoReversa = this.arestas.findIndex(aresta => aresta.labelVertice1 == this.vertices[index2].label && aresta.labelVertice2 == this.vertices[index1].label);
+
         this.vertices[index1].connections?.push(this.vertices[index2].label);
         this.vertices[index2].connections?.push(this.vertices[index1].label);
 
@@ -98,10 +100,14 @@ export class StatsService {
           finalX = this.vertices[index1].offsetX;
           finalY = this.vertices[index1].offsetY;
         }
-        
+
         transformOrigin = (this.vertices[index1].offsetY < this.vertices[index2].offsetY) ? "left top" : "left bottom";
         comprimento = Math.sqrt((Math.pow(finalX - initialX, 2)) + (Math.pow(finalY - initialY, 2)));
 
+        if (conexaoReversa != -1) {
+          this.arestas[conexaoReversa].offsetY += 5;
+          initialY -= 5;
+        }
         this.arestas.push(
           {
             id: this.arestas.length,
