@@ -81,48 +81,26 @@ export class StatsService {
         this.vertices[index1].connections?.push(this.vertices[index2].label);
         this.vertices[index2].connections?.push(this.vertices[index1].label);
 
-        let initialX, initialY, finalX, finalY, angulo, comprimento, additionalOffsetX, additionalOffsetY;
-        if (this.vertices[index1].offsetX < this.vertices[index2].offsetX) {
-          initialX = this.vertices[index1].offsetX;
-          finalX = this.vertices[index2].offsetX;
+        let initialX, initialY, finalX, finalY, angulo, comprimento, transformOrigin;
+        initialX = this.vertices[index1].offsetX;
+        initialY = this.vertices[index1].offsetY;
 
-          if (this.vertices[index1].offsetY < this.vertices[index2].offsetY) {
-            initialY = this.vertices[index1].offsetY;
-            finalY = this.vertices[index2].offsetY;
+        finalX = this.vertices[index2].offsetX;
+        finalY = this.vertices[index2].offsetY;
 
-            angulo = (finalY - initialY) / (finalX - initialX);
-            angulo = 360 - (Math.atan(angulo) * 180 / Math.PI);
-          }
-          else {
-            initialY = this.vertices[index2].offsetY;
-            finalY = this.vertices[index1].offsetY;
+        angulo = (finalY - initialY) / (finalX - initialX);
+        angulo = 360 - (Math.atan(angulo) * 180 / Math.PI);
 
-            angulo = (finalY - initialY) / (finalX - initialX);
-            angulo = Math.atan(angulo) * 180 / Math.PI;
-          }
-        }
-        else {
+        if (this.vertices[index1].offsetX >= this.vertices[index2].offsetX) {
           initialX = this.vertices[index2].offsetX;
+          initialY = this.vertices[index2].offsetY;
+
           finalX = this.vertices[index1].offsetX;
-
-          if (this.vertices[index1].offsetY < this.vertices[index2].offsetY) {
-            initialY = this.vertices[index1].offsetY;
-            finalY = this.vertices[index2].offsetY;
-
-            angulo = (finalY - initialY) / (finalX - initialX);
-            angulo = Math.atan(angulo) * 180 / Math.PI;
-          }
-          else {
-            initialY = this.vertices[index2].offsetY;
-            finalY = this.vertices[index1].offsetY;
-
-            angulo = (finalY - initialY) / (finalX - initialX);
-            angulo = 360 - (Math.atan(angulo) * 180 / Math.PI);
-          }
+          finalY = this.vertices[index1].offsetY;
         }
+        
+        transformOrigin = (this.vertices[index1].offsetY < this.vertices[index2].offsetY) ? "left top" : "left bottom";
         comprimento = Math.sqrt((Math.pow(finalX - initialX, 2)) + (Math.pow(finalY - initialY, 2)));
-        additionalOffsetX = (finalY - initialY);
-        additionalOffsetY = (finalX - initialX);
 
         this.arestas.push(
           {
@@ -131,10 +109,9 @@ export class StatsService {
             labelVertice2: this.vertices[index2].label,
             offsetX: initialX,
             offsetY: initialY,
-            additionalOffsetX: additionalOffsetX,
-            additionalOffsetY: additionalOffsetY,
             angulo: angulo,
-            comprimento: comprimento
+            comprimento: comprimento,
+            transformOrigin: transformOrigin
           }
         );
         this.updateArestas();

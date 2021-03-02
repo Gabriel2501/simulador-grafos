@@ -10,12 +10,13 @@
     <div *ngIf="arestas$ | async as arestas">
         <div *ngFor="let aresta of arestas" [ngStyle]="{
                 'position': 'absolute', 
-                'margin-left': aresta.offsetX+'px', 
-                'margin-top': aresta.offsetY+aresta.additionalOffsetY+'px', 
+                'transform': 'rotate(-'+aresta.angulo+'deg)',
+                'transform-origin': aresta.transformOrigin,
+                'margin-left': 'calc('+aresta.offsetX+'px + 25px)', 
+                'margin-top': 'calc('+aresta.offsetY+'px + 25px)', 
                 'width': aresta.comprimento+'px', 
                 'height': '5px', 
                 'background-color': 'black', 
-                'transform': 'rotate(-'+aresta.angulo+'deg)', 
                 'z-index': '0'
             }">
         </div>

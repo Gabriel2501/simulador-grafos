@@ -4,8 +4,7 @@ export interface IAresta {
     labelVertice2: string,
     offsetX: number,
     offsetY: number,
-    additionalOffsetX: number,
-    additionalOffsetY: number,
     angulo: number,
-    comprimento: number
+    comprimento: number,
+    transformOrigin: string
 }
