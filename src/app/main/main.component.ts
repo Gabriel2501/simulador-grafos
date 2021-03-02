@@ -1,8 +1,8 @@
+import { IAresta } from './../interfaces/aresta';
 import { IVertice } from './../interfaces/vertice';
 import { StatsService } from './../services/stats.service';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IAresta } from '../interfaces/aresta';
 
 @Component({
   selector: 'app-main',
@@ -27,7 +27,7 @@ export class MainComponent implements OnInit {
   }
 
   novoVertice(event: any) {
-    if (event.target?.localName === "div") this._statsService.adicionarVertice(event.offsetX, event.offsetY);
+    if (event.target?.localName === "div") this._statsService.adicionarVertice(event.offsetX - 25, event.offsetY - 25);
   }
 
   selecionarVertice(vertice: IVertice) {
@@ -49,5 +49,13 @@ export class MainComponent implements OnInit {
       this.verticesSelecionados = [];
 
     }
+  }
+
+  removerVertice(vertice: IVertice) {
+    this._statsService.removerVertice(vertice);
+  }
+
+  removerAresta(aresta: IAresta) {
+    this._statsService.removerAresta(aresta);
   }
 }

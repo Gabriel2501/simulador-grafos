@@ -1,5 +1,9 @@
 <mat-list role="list">
-    <mat-list-item role="listitem">*</mat-list-item>
-    <mat-list-item role="listitem">*</mat-list-item>
+    <mat-list-item role="listitem" *ngIf="vertices$ | async as vertices">
+        Número de Vértices: {{vertices.length}}
+    </mat-list-item>
+    <mat-list-item role="listitem" *ngIf="arestas$ | async as arestas">
+        Número total de Arestas: {{arestas.length}}
+    </mat-list-item>
     <mat-list-item role="listitem">*</mat-list-item>
 </mat-list>

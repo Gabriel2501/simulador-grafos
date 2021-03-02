@@ -1,7 +1,7 @@
+import { IAresta } from './../interfaces/aresta';
 import { IVertice } from './../interfaces/vertice';
-import { Injectable } from '@angular/core';
+import { forwardRef, Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { IAresta } from '../interfaces/aresta';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +14,9 @@ export class StatsService {
 
   private arestas$: Subject<IAresta[]>;
   private arestas: IAresta[];
+
+  private verticesRemovidos = 0;
+  private arestasRemovidas = 0;
 
   constructor() {
     this.vertices$ = new Subject();
@@ -59,7 +62,7 @@ export class StatsService {
 
     this.vertices.push(
       {
-        id: this.vertices.length,
+        id: this.vertices.length + this.verticesRemovidos,
         label: tempLabel,
         connections: [],
         offsetX: offsetX,
@@ -67,6 +70,22 @@ export class StatsService {
       }
     );
 
+    this.updateVertices();
+  }
+
+  removerVertice(verticeRemover: IVertice) {
+    while (this.arestas.some(aresta => aresta.labelVertice1 === verticeRemover.label || aresta.labelVertice2 === verticeRemover.label)) {
+      this.vertices.forEach(vertice => {
+        vertice.connections.forEach((connectionLabel, index) => {
+          if (connectionLabel === verticeRemover.label) {
+            vertice.connections.splice(index, 1);
+            this.removerArestas(verticeRemover);
+          }
+        });
+      });
+    }
+    this.vertices.splice(this.vertices.findIndex(vertice => vertice.id === verticeRemover.id), 1);
+    this.verticesRemovidos++;
     this.updateVertices();
   }
 
@@ -105,12 +124,14 @@ export class StatsService {
         comprimento = Math.sqrt((Math.pow(finalX - initialX, 2)) + (Math.pow(finalY - initialY, 2)));
 
         if (conexaoReversa != -1) {
+          this.arestas[conexaoReversa].offsetX += 5;
           this.arestas[conexaoReversa].offsetY += 5;
+          initialX -= 5;
           initialY -= 5;
         }
         this.arestas.push(
           {
-            id: this.arestas.length,
+            id: this.arestas.length + this.arestasRemovidas,
             labelVertice1: this.vertices[index1].label,
             labelVertice2: this.vertices[index2].label,
             offsetX: initialX,
@@ -123,5 +144,22 @@ export class StatsService {
         this.updateArestas();
       }
     }
+  }
+
+  removerAresta(arestaRemover: IAresta) {
+    this.arestas.splice(this.arestas.findIndex(aresta => aresta.id === arestaRemover.id), 1);
+    this.arestasRemovidas++;
+    this.updateArestas();
+  }
+
+  removerArestas(vertice: IVertice) {
+    this.arestas.forEach((aresta, index) => {
+      if (aresta.labelVertice1 == vertice.label || aresta.labelVertice2 == vertice.label) {
+        this.arestas.splice(index, 1);
+        this.arestasRemovidas++;
+      }
+    });
+
+    this.updateArestas();
   }
 }

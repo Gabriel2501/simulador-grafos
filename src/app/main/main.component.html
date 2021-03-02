@@ -1,14 +1,14 @@
-<div id="content-container" (click)="novoVertice($event)">
+<div id="content-container" (click)="novoVertice($event)" (contextmenu)="$event.preventDefault();">
     <div *ngIf="vertices$ | async as vertices">
         <div *ngFor="let vertice of vertices"
             [ngStyle]="{'position': 'absolute', 'margin-left': vertice.offsetX+'px', 'margin-top': vertice.offsetY+'px','z-index':'1'}">
-            <button [id]="'id'+vertice.id" mat-fab (click)="selecionarVertice(vertice)">
+            <button [id]="'id'+vertice.id" mat-fab (click)="selecionarVertice(vertice)" (contextmenu)="removerVertice(vertice)">
                 {{vertice?.label}}
             </button>
         </div>
     </div>
     <div *ngIf="arestas$ | async as arestas">
-        <div *ngFor="let aresta of arestas" [ngStyle]="{
+        <div *ngFor="let aresta of arestas" (contextmenu)="removerAresta(aresta)" [ngStyle]="{
                 'position': 'absolute', 
                 'transform': 'rotate(-'+aresta.angulo+'deg)',
                 'transform-origin': aresta.transformOrigin,
@@ -17,6 +17,7 @@
                 'width': aresta.comprimento+'px', 
                 'height': '5px', 
                 'background-color': 'black', 
+                'cursor': 'pointer',
                 'z-index': '0'
             }">
         </div>
