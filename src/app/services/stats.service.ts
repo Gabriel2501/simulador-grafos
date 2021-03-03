@@ -32,7 +32,7 @@ export class StatsService {
     this.visibilidadeGrausImpares$ = new Subject();
   }
 
-  update(){
+  update() {
     this.updateVertices();
     this.updateArestas();
   }
@@ -59,7 +59,7 @@ export class StatsService {
   }
 
   updateVertices(vertices?: IVertice[]) {
-    if(vertices) this.vertices = vertices;
+    if (vertices) this.vertices = vertices;
     this.vertices$.next(this.vertices);
   }
 
@@ -138,8 +138,14 @@ export class StatsService {
         finalX = this.vertices[index2].offsetX;
         finalY = this.vertices[index2].offsetY;
 
-        angulo = (finalY - initialY) / (finalX - initialX);
-        angulo = 360 - (Math.atan(angulo) * 180 / Math.PI);
+        if ((finalX - initialX) != 0) {
+          angulo = (finalY - initialY) / (finalX - initialX);
+          angulo = 360 - (Math.atan(angulo) * 180 / Math.PI);
+        }
+        else {
+          angulo = (finalY > initialY) ? 90 : 270;
+        }
+
 
         if (this.vertices[index1].offsetX >= this.vertices[index2].offsetX) {
           initialX = this.vertices[index2].offsetX;
@@ -153,7 +159,7 @@ export class StatsService {
         comprimento = Math.sqrt((Math.pow(finalX - initialX, 2)) + (Math.pow(finalY - initialY, 2)));
 
         if (conexaoReversa != -1) {
-          if (vertice1.offsetX / vertice2.offsetX > vertice1.offsetY / vertice2.offsetY) {
+          if (((vertice1.offsetX / vertice2.offsetX > vertice1.offsetY / vertice2.offsetY) && (vertice1.offsetX / vertice2.offsetX) != 1) || (vertice1.offsetY / vertice2.offsetY) == 1) {
             additionalOffsetX = 0;
             additionalOffsetY = 5;
             this.arestas[conexaoReversa].additionalOffsetX = 0;
@@ -193,20 +199,44 @@ export class StatsService {
       this.arestas[conexaoReversa].additionalOffsetY = 0;
     }
 
-    this.arestas.splice(this.arestas.findIndex(aresta => aresta.id === arestaRemover.id), 1);
-    this.arestasRemovidas++;
+    let arestaIndex = this.arestas.findIndex(aresta => aresta.id === arestaRemover.id);
+    if (arestaIndex != -1) {
+      this.removeConnection(arestaRemover.labelVertice1, arestaRemover.labelVertice2);
+      this.removeConnection(arestaRemover.labelVertice2, arestaRemover.labelVertice1);
+      this.arestas.splice(arestaIndex, 1);
+      this.arestasRemovidas++;
+    }
 
     this.update();
   }
 
   removerArestas(vertice: IVertice) {
-    this.arestas.forEach((aresta, index) => {
-      if (aresta.labelVertice1 == vertice.label || aresta.labelVertice2 == vertice.label) {
-        this.arestas.splice(index, 1);
-        this.arestasRemovidas++;
-      }
-    });
+    while (this.arestas.some(aresta => aresta.labelVertice1 == vertice.label || aresta.labelVertice2 == vertice.label)) {
+      this.arestas.forEach((aresta, index) => {
+        if (aresta.labelVertice1 == vertice.label) {
+          this.arestas.splice(index, 1);
+          this.arestasRemovidas++;
+          this.removeConnection(vertice.label, aresta.labelVertice2);
+          this.removeConnection(aresta.labelVertice2, vertice.label);
+        }
+        else if (aresta.labelVertice2 === vertice.label) {
+          this.arestas.splice(index, 1);
+          this.arestasRemovidas++;
+          this.removeConnection(vertice.label, aresta.labelVertice1);
+          this.removeConnection(aresta.labelVertice1, vertice.label);
+        }
+      });
+    }
 
     this.update();
+  }
+
+  removeConnection(label1: string, label2: string) {
+    let index = this.vertices.findIndex(vertice => vertice.label === label1);
+
+    if (index != -1) {
+      let connectionIndex = this.vertices[index].connections.findIndex(label => label === label2);
+      if (connectionIndex != -1) this.vertices[index].connections.splice(connectionIndex, 1);
+    }
   }
 }
