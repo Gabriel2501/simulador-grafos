@@ -7,7 +7,6 @@ import { AppComponent } from './app.component';
 import { MainComponent } from './main/main.component';
 import { StatsComponent } from './stats/stats.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MenuComponent } from './menu/menu.component';
 import { FormsModule } from '@angular/forms';
 import { NavbarComponent } from './navbar/navbar.component';
 
@@ -16,7 +15,6 @@ import { NavbarComponent } from './navbar/navbar.component';
     AppComponent,
     MainComponent,
     StatsComponent,
-    MenuComponent,
     NavbarComponent
   ],
   imports: [

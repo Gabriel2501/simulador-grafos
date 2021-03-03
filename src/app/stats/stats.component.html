@@ -1,9 +1,25 @@
-<mat-list role="list">
-    <mat-list-item role="listitem" *ngIf="vertices$ | async as vertices">
-        Número de Vértices: {{vertices.length}}
-    </mat-list-item>
-    <mat-list-item role="listitem" *ngIf="arestas$ | async as arestas">
-        Número total de Arestas: {{arestas.length}}
-    </mat-list-item>
-    <mat-list-item role="listitem">*</mat-list-item>
-</mat-list>
+<div class="stats-container">
+    <div class="label-input">
+        <mat-form-field>
+            <mat-label>Label para o Vértice (opcional):</mat-label>
+            <input matInput type="text" #inputLabel (change)="adicionarVertice(inputLabel)">
+        </mat-form-field>
+    </div>
+    <div class="detalhes-button">
+        <button mat-raised-button (click)="alternarVisibilidadeDetalhes()">Exibir
+            Detalhes</button>
+    </div>
+    <div class="stats-list">
+        <mat-list role="list" *ngIf="exibirDetalhes">
+            <mat-list-item role="listitem" *ngIf="vertices">
+                Número de Vértices: {{vertices.length}}
+            </mat-list-item>
+            <mat-list-item role="listitem" *ngIf="arestas">
+                Número total de Arestas: {{arestas.length}}
+            </mat-list-item>
+            <mat-list-item role="listitem">
+
+            </mat-list-item>
+        </mat-list>
+    </div>
+</div>
