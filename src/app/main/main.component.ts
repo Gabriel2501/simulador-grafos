@@ -14,18 +14,36 @@ export class MainComponent implements OnInit {
   public vertices$: Observable<IVertice[]>;
   public arestas$: Observable<IAresta[]>;
 
+  public vertices: IVertice[];
+
   public visibilidadeGraus: boolean;
+  private visibilidadeGrausImpares: boolean;
 
   private verticesSelecionados: IVertice[];
 
   constructor(private _statsService: StatsService) {
     this.visibilidadeGraus = false;
+    this.visibilidadeGrausImpares = false;
     this.verticesSelecionados = [];
+    this.vertices = [];
 
     this.vertices$ = this._statsService.getVertices();
     this.arestas$ = this._statsService.getArestas();
+
+    this.vertices$.subscribe(vertices => {
+      this.vertices = vertices;
+      this.vertices.forEach(vertice => {
+        vertice.isHighlighted = this.visibilidadeGrausImpares && (vertice.connections.length % 2 === 1);
+        if (vertice.isHighlighted) document.querySelector(`#id${vertice.id}`)?.classList.add("highlighted");
+        else document.querySelector(`#id${vertice.id}`)?.classList.remove("highlighted");
+      });
+    });
+
     this._statsService.getVisibilidadeGraus().subscribe(visibilidade => {
       this.visibilidadeGraus = visibilidade;
+    });
+    this._statsService.getVisibilidadeGrausImpares().subscribe(visibilidade => {
+      this.visibilidadeGrausImpares = visibilidade;
     });
 
   }

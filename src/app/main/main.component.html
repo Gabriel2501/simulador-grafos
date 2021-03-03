@@ -1,5 +1,5 @@
 <div id="content-container" (click)="novoVertice($event)" (contextmenu)="$event.preventDefault();">
-    <div *ngIf="vertices$ | async as vertices">
+    <div *ngIf="vertices$ | async">
         <div *ngFor="let vertice of vertices"
             [ngStyle]="{'position': 'absolute', 'margin-left': vertice.offsetX+'px', 'margin-top': vertice.offsetY+'px','z-index':'1'}">
             <button [id]="'id'+vertice.id" mat-fab (click)="selecionarVertice(vertice)"

@@ -16,6 +16,7 @@ export class StatsService {
   private arestas: IAresta[];
 
   private visibilidadeGraus$: Subject<boolean>;
+  private visibilidadeGrausImpares$: Subject<boolean>;
 
   private verticesRemovidos = 0;
   private arestasRemovidas = 0;
@@ -28,6 +29,12 @@ export class StatsService {
     this.arestas = [];
 
     this.visibilidadeGraus$ = new Subject();
+    this.visibilidadeGrausImpares$ = new Subject();
+  }
+
+  update(){
+    this.updateVertices();
+    this.updateArestas();
   }
 
   getVisibilidadeGraus() {
@@ -38,11 +45,21 @@ export class StatsService {
     this.visibilidadeGraus$.next(visibilidade);
   }
 
+  getVisibilidadeGrausImpares() {
+    return this.visibilidadeGrausImpares$;
+  }
+
+  updateVisibilidadeGrausImpares(visibilidade: boolean) {
+    this.visibilidadeGrausImpares$.next(visibilidade);
+    this.update();
+  }
+
   getVertices() {
     return this.vertices$;
   }
 
-  updateVertices() {
+  updateVertices(vertices?: IVertice[]) {
+    if(vertices) this.vertices = vertices;
     this.vertices$.next(this.vertices);
   }
 
@@ -82,7 +99,7 @@ export class StatsService {
       }
     );
 
-    this.updateVertices();
+    this.update();
   }
 
   removerVertice(verticeRemover: IVertice) {
@@ -98,7 +115,7 @@ export class StatsService {
     }
     this.vertices.splice(this.vertices.findIndex(vertice => vertice.id === verticeRemover.id), 1);
     this.verticesRemovidos++;
-    this.updateVertices();
+    this.update();
   }
 
   adicionarAresta(vertice1: IVertice, vertice2: IVertice) {
@@ -164,7 +181,7 @@ export class StatsService {
             transformOrigin: transformOrigin
           }
         );
-        this.updateArestas();
+        this.update();
       }
     }
   }
@@ -179,7 +196,7 @@ export class StatsService {
     this.arestas.splice(this.arestas.findIndex(aresta => aresta.id === arestaRemover.id), 1);
     this.arestasRemovidas++;
 
-    this.updateArestas();
+    this.update();
   }
 
   removerArestas(vertice: IVertice) {
@@ -190,6 +207,6 @@ export class StatsService {
       }
     });
 
-    this.updateArestas();
+    this.update();
   }
 }

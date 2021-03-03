@@ -6,5 +6,6 @@ export interface IVertice {
 
     offsetX: number,
     offsetY: number,
-    isSelected?: boolean
+    isSelected?: boolean,
+    isHighlighted?: boolean
 }

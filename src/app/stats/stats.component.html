@@ -12,22 +12,39 @@
     </div>
     <div class="stats-list">
         <mat-list role="list" *ngIf="exibirDetalhes">
+
             <mat-list-item role="listitem" *ngIf="vertices">
                 Número de Vértices: {{vertices.length}}
             </mat-list-item>
+
             <mat-list-item role="listitem" *ngIf="arestas">
                 Número total de Arestas: {{arestas.length}}
             </mat-list-item>
+
             <mat-list-item role="listitem">
                 Soma dos graus dos Vértices: {{somaGraus}}
             </mat-list-item>
+
             <mat-list-item role="listitem">
-                Exibir Graus Individualmente: 
-                <button mat-mini-fab (click)="alternarVisibilidadeGrausIndividualmente()">
+                Exibir Graus dos Vértices Individualmente:
+                <button class="icone" [color]="visibilidadeGrausColor" mat-mini-fab (click)="alternarVisibilidadeGrausIndividualmente()">
                     <mat-icon *ngIf="!visibilidadeGraus">close</mat-icon>
                     <mat-icon *ngIf="visibilidadeGraus">done</mat-icon>
-                  </button>
+                </button>
             </mat-list-item>
+
+            <mat-list-item role="listitem">
+                Número de Vértices com Grau Ímpar (handshaking lemma): {{quantidadeGrausImpares}}
+            </mat-list-item>
+
+            <mat-list-item role="listitem">
+                Destacar Vértices com Grau Ímpar:
+                <button class="icone" [color]="visibilidadeGrausImparesColor" mat-mini-fab (click)="alternarVisibilidadeGrausImpares()">
+                    <mat-icon *ngIf="!visibilidadeGrausImpares">close</mat-icon>
+                    <mat-icon *ngIf="visibilidadeGrausImpares">done</mat-icon>
+                </button>
+            </mat-list-item>
+
         </mat-list>
     </div>
 </div>
