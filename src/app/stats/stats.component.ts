@@ -4,6 +4,7 @@ import { StatsService } from './../services/stats.service';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { IVertice } from '../interfaces/vertice';
 import { ThisReceiver } from '@angular/compiler';
+import { ViewportScroller } from '@angular/common';
 
 @Component({
   selector: 'app-stats',
@@ -20,6 +21,8 @@ export class StatsComponent implements OnInit {
 
   public vertices: IVertice[];
   public arestas: IAresta[];
+  public somaGraus: number;
+  public visibilidadeGraus: boolean;
 
   public exibirDetalhes = false;
 
@@ -29,9 +32,17 @@ export class StatsComponent implements OnInit {
 
     this.vertices = [];
     this.arestas = [];
+    this.somaGraus = 0;
+    this.visibilidadeGraus = false;
 
-    this.vertices$.subscribe(vertices => this.vertices = vertices);
-    this.arestas$.subscribe(arestas => this.arestas = arestas);
+    this.vertices$.subscribe(vertices => {
+      this.vertices = vertices;
+      this.updateStats();
+    });
+    this.arestas$.subscribe(arestas => {
+      this.arestas = arestas;
+      this.updateStats();
+    });    
   }
 
   ngOnInit(): void {
@@ -44,6 +55,18 @@ export class StatsComponent implements OnInit {
 
   alternarVisibilidadeDetalhes() {
     this.exibirDetalhes = !this.exibirDetalhes;
+  }
+
+  alternarVisibilidadeGrausIndividualmente() {
+    this.visibilidadeGraus = !this.visibilidadeGraus;
+    this._statsService.updateVisibilidadeGraus(this.visibilidadeGraus);
+  }
+
+  updateStats() {
+    this.somaGraus = 0;
+    this.vertices.forEach(vertice => {
+      this.somaGraus += vertice.connections.length;
+    });
   }
 
 }

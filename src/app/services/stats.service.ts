@@ -15,6 +15,8 @@ export class StatsService {
   private arestas$: Subject<IAresta[]>;
   private arestas: IAresta[];
 
+  private visibilidadeGraus$: Subject<boolean>;
+
   private verticesRemovidos = 0;
   private arestasRemovidas = 0;
 
@@ -24,6 +26,16 @@ export class StatsService {
 
     this.arestas$ = new Subject();
     this.arestas = [];
+
+    this.visibilidadeGraus$ = new Subject();
+  }
+
+  getVisibilidadeGraus() {
+    return this.visibilidadeGraus$;
+  }
+
+  updateVisibilidadeGraus(visibilidade: boolean) {
+    this.visibilidadeGraus$.next(visibilidade);
   }
 
   getVertices() {

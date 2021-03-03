@@ -6,8 +6,9 @@
         </mat-form-field>
     </div>
     <div class="detalhes-button">
-        <button mat-raised-button (click)="alternarVisibilidadeDetalhes()">Exibir
-            Detalhes</button>
+        <button mat-raised-button (click)="alternarVisibilidadeDetalhes()">
+            Exibir Detalhes
+        </button>
     </div>
     <div class="stats-list">
         <mat-list role="list" *ngIf="exibirDetalhes">
@@ -18,7 +19,14 @@
                 Número total de Arestas: {{arestas.length}}
             </mat-list-item>
             <mat-list-item role="listitem">
-
+                Soma dos graus dos Vértices: {{somaGraus}}
+            </mat-list-item>
+            <mat-list-item role="listitem">
+                Exibir Graus Individualmente: 
+                <button mat-mini-fab (click)="alternarVisibilidadeGrausIndividualmente()">
+                    <mat-icon *ngIf="!visibilidadeGraus">close</mat-icon>
+                    <mat-icon *ngIf="visibilidadeGraus">done</mat-icon>
+                  </button>
             </mat-list-item>
         </mat-list>
     </div>

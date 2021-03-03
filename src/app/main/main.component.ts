@@ -14,13 +14,20 @@ export class MainComponent implements OnInit {
   public vertices$: Observable<IVertice[]>;
   public arestas$: Observable<IAresta[]>;
 
+  public visibilidadeGraus: boolean;
+
   private verticesSelecionados: IVertice[];
 
   constructor(private _statsService: StatsService) {
+    this.visibilidadeGraus = false;
+    this.verticesSelecionados = [];
+
     this.vertices$ = this._statsService.getVertices();
     this.arestas$ = this._statsService.getArestas();
+    this._statsService.getVisibilidadeGraus().subscribe(visibilidade => {
+      this.visibilidadeGraus = visibilidade;
+    });
 
-    this.verticesSelecionados = [];
   }
 
   ngOnInit(): void {
@@ -52,6 +59,7 @@ export class MainComponent implements OnInit {
   }
 
   removerVertice(vertice: IVertice) {
+    if (this.verticesSelecionados.includes(vertice)) this.selecionarVertice(vertice);
     this._statsService.removerVertice(vertice);
   }
 
