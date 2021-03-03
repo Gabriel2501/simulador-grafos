@@ -124,7 +124,6 @@ export class StatsService {
         comprimento = Math.sqrt((Math.pow(finalX - initialX, 2)) + (Math.pow(finalY - initialY, 2)));
 
         if (conexaoReversa != -1) {
-
           if (vertice1.offsetX / vertice2.offsetX > vertice1.offsetY / vertice2.offsetY) {
             additionalOffsetX = 0;
             additionalOffsetY = 5;
@@ -137,8 +136,6 @@ export class StatsService {
             this.arestas[conexaoReversa].additionalOffsetX = -5;
             this.arestas[conexaoReversa].additionalOffsetY = 0;
           }
-
-
         }
 
         this.arestas.push(
