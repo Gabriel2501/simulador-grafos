@@ -2,7 +2,8 @@
     <div *ngIf="vertices$ | async as vertices">
         <div *ngFor="let vertice of vertices"
             [ngStyle]="{'position': 'absolute', 'margin-left': vertice.offsetX+'px', 'margin-top': vertice.offsetY+'px','z-index':'1'}">
-            <button [id]="'id'+vertice.id" mat-fab (click)="selecionarVertice(vertice)" (contextmenu)="removerVertice(vertice)">
+            <button [id]="'id'+vertice.id" mat-fab (click)="selecionarVertice(vertice)"
+                (contextmenu)="removerVertice(vertice)">
                 {{vertice?.label}}
             </button>
         </div>
@@ -12,8 +13,8 @@
                 'position': 'absolute', 
                 'transform': 'rotate(-'+aresta.angulo+'deg)',
                 'transform-origin': aresta.transformOrigin,
-                'margin-left': 'calc('+aresta.offsetX+'px + 25px)', 
-                'margin-top': 'calc('+aresta.offsetY+'px + 25px)', 
+                'margin-left': 'calc('+(aresta.offsetX + aresta.additionalOffsetX)+'px + 25px)', 
+                'margin-top': 'calc('+(aresta.offsetY + aresta.additionalOffsetY)+'px + 25px)', 
                 'width': aresta.comprimento+'px', 
                 'height': '5px', 
                 'background-color': 'black', 

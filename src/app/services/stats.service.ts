@@ -102,7 +102,7 @@ export class StatsService {
         this.vertices[index1].connections?.push(this.vertices[index2].label);
         this.vertices[index2].connections?.push(this.vertices[index1].label);
 
-        let initialX, initialY, finalX, finalY, angulo, comprimento, transformOrigin;
+        let initialX, initialY, finalX, finalY, angulo, comprimento, transformOrigin, additionalOffsetX = 0, additionalOffsetY = 0;
         initialX = this.vertices[index1].offsetX;
         initialY = this.vertices[index1].offsetY;
 
@@ -124,11 +124,23 @@ export class StatsService {
         comprimento = Math.sqrt((Math.pow(finalX - initialX, 2)) + (Math.pow(finalY - initialY, 2)));
 
         if (conexaoReversa != -1) {
-          this.arestas[conexaoReversa].offsetX += 5;
-          this.arestas[conexaoReversa].offsetY += 5;
-          initialX -= 5;
-          initialY -= 5;
+
+          if (vertice1.offsetX / vertice2.offsetX > vertice1.offsetY / vertice2.offsetY) {
+            additionalOffsetX = 0;
+            additionalOffsetY = 5;
+            this.arestas[conexaoReversa].additionalOffsetX = 0;
+            this.arestas[conexaoReversa].additionalOffsetY = -5;
+          }
+          else {
+            additionalOffsetX = 5;
+            additionalOffsetY = 0;
+            this.arestas[conexaoReversa].additionalOffsetX = -5;
+            this.arestas[conexaoReversa].additionalOffsetY = 0;
+          }
+
+
         }
+
         this.arestas.push(
           {
             id: this.arestas.length + this.arestasRemovidas,
@@ -136,6 +148,8 @@ export class StatsService {
             labelVertice2: this.vertices[index2].label,
             offsetX: initialX,
             offsetY: initialY,
+            additionalOffsetX: additionalOffsetX,
+            additionalOffsetY: additionalOffsetY,
             angulo: angulo,
             comprimento: comprimento,
             transformOrigin: transformOrigin
@@ -147,8 +161,15 @@ export class StatsService {
   }
 
   removerAresta(arestaRemover: IAresta) {
+    let conexaoReversa = this.arestas.findIndex(aresta => aresta.labelVertice1 === arestaRemover.labelVertice2 && aresta.labelVertice2 === arestaRemover.labelVertice1);
+    if (conexaoReversa != -1) {
+      this.arestas[conexaoReversa].additionalOffsetX = 0;
+      this.arestas[conexaoReversa].additionalOffsetY = 0;
+    }
+
     this.arestas.splice(this.arestas.findIndex(aresta => aresta.id === arestaRemover.id), 1);
     this.arestasRemovidas++;
+
     this.updateArestas();
   }
 
