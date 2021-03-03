@@ -27,7 +27,7 @@ export class MainComponent implements OnInit {
   }
 
   novoVertice(event: any) {
-    if (event.target?.localName === "div") this._statsService.adicionarVertice(event.offsetX - 25, event.offsetY - 25);
+    if (event.target.id === "content-container") this._statsService.adicionarVertice(event.offsetX - 25, event.offsetY - 25);
   }
 
   selecionarVertice(vertice: IVertice) {
