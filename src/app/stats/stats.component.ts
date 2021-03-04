@@ -26,6 +26,8 @@ export class StatsComponent implements OnInit {
   public arestas: IAresta[];
 
   public isRegular: string;
+  public isConexo: string;
+  public isFortementeConexo: string;
   public somaGraus: number;
   public quantidadeGrausImpares: number;
 
@@ -45,6 +47,8 @@ export class StatsComponent implements OnInit {
     this.arestas = [];
 
     this.isRegular = "Não";
+    this.isConexo = "Não";
+    this.isFortementeConexo = "Não";
     this.somaGraus = 0;
     this.quantidadeGrausImpares = 0;
 
@@ -91,17 +95,29 @@ export class StatsComponent implements OnInit {
   }
 
   updateStats() {
+    this.isConexo = "Não";
+    this.isFortementeConexo = "Sim";
     this.somaGraus = 0;
     this.quantidadeGrausImpares = 0;
 
     let regularValidator = true;
 
     this.vertices.forEach(vertice => {
+      if (this.vertices.every(ver => vertice.connections.includes(ver.label) || vertice.label === ver.label)) {
+        this.isConexo = "Sim";
+      }
+      else {
+        this.isFortementeConexo = "Não";
+      }
       if (vertice.connections.length !== this.vertices[0].connections.length || this.vertices[0].connections.length === 0) regularValidator = false;
       this.somaGraus += vertice.connections.length + vertice.selfConnectionCounter;
       if ((vertice.connections.length + vertice.selfConnectionCounter) % 2 === 1) this.quantidadeGrausImpares++;
     });
     this.isRegular = (this.somaGraus % this.vertices.length === 0) && regularValidator ? "Sim" : "Não";
+    if (this.vertices.length === 1) {
+      this.isConexo = "Não";
+      this.isFortementeConexo = "Não";
+    }
   }
 
 }

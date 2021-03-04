@@ -38,7 +38,7 @@
             </mat-list-item>
 
             <mat-list-item role="listitem">
-                Número de Vértices com Grau Ímpar (handshaking lemma): {{quantidadeGrausImpares}}
+                Vértices com Grau Ímpar (handshaking lemma): {{quantidadeGrausImpares}}
             </mat-list-item>
 
             <mat-list-item role="listitem">
@@ -48,6 +48,19 @@
                     <mat-icon *ngIf="visibilidadeGrausImpares">done</mat-icon>
                 </button>
             </mat-list-item>
+
+            <mat-list-item role="listitem">
+                É Grafo Conexo? {{isConexo}}
+            </mat-list-item>
+
+            <mat-list-item role="listitem">
+                É Grafo Fortemente Conexo? {{isFortementeConexo}}
+            </mat-list-item>
+
+            <!-- Possui caminho hamiltoniano ????? -->
+            <!-- Possui ciclo hamiltoniano ????? -->
+            <!-- Possui caminho euleriano -->
+            <!-- Possui ciclo euleriano -->
 
         </mat-list>
     </div>
