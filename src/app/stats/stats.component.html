@@ -31,7 +31,8 @@
 
             <mat-list-item role="listitem">
                 Exibir Graus dos Vértices Individualmente:
-                <button class="icone" [color]="visibilidadeGrausColor" mat-mini-fab (click)="alternarVisibilidadeGrausIndividualmente()">
+                <button class="icone" [color]="visibilidadeGrausColor" mat-mini-fab
+                    (click)="alternarVisibilidadeGrausIndividualmente()">
                     <mat-icon *ngIf="!visibilidadeGraus">close</mat-icon>
                     <mat-icon *ngIf="visibilidadeGraus">done</mat-icon>
                 </button>
@@ -43,7 +44,8 @@
 
             <mat-list-item role="listitem">
                 Destacar Vértices com Grau Ímpar:
-                <button class="icone" [color]="visibilidadeGrausImparesColor" mat-mini-fab (click)="alternarVisibilidadeGrausImpares()">
+                <button class="icone" [color]="visibilidadeGrausImparesColor" mat-mini-fab
+                    (click)="alternarVisibilidadeGrausImpares()">
                     <mat-icon *ngIf="!visibilidadeGrausImpares">close</mat-icon>
                     <mat-icon *ngIf="visibilidadeGrausImpares">done</mat-icon>
                 </button>
@@ -57,10 +59,16 @@
                 É Grafo Fortemente Conexo? {{isFortementeConexo}}
             </mat-list-item>
 
+            <mat-list-item role="listitem">
+                Possui caminho Euleriano? {{possuiCaminhoEuleriano}}
+            </mat-list-item>
+
+            <mat-list-item role="listitem">
+                Possui ciclo Euleriano? {{possuiCicloEuleriano}}
+            </mat-list-item>
+
             <!-- Possui caminho hamiltoniano ????? -->
             <!-- Possui ciclo hamiltoniano ????? -->
-            <!-- Possui caminho euleriano -->
-            <!-- Possui ciclo euleriano -->
 
         </mat-list>
     </div>

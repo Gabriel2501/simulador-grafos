@@ -28,6 +28,8 @@ export class StatsComponent implements OnInit {
   public isRegular: string;
   public isConexo: string;
   public isFortementeConexo: string;
+  public possuiCaminhoEuleriano: string;
+  public possuiCicloEuleriano: string;
   public somaGraus: number;
   public quantidadeGrausImpares: number;
 
@@ -49,6 +51,8 @@ export class StatsComponent implements OnInit {
     this.isRegular = "Não";
     this.isConexo = "Não";
     this.isFortementeConexo = "Não";
+    this.possuiCaminhoEuleriano = "Não";
+    this.possuiCicloEuleriano = "Não";
     this.somaGraus = 0;
     this.quantidadeGrausImpares = 0;
 
@@ -97,27 +101,32 @@ export class StatsComponent implements OnInit {
   updateStats() {
     this.isConexo = "Não";
     this.isFortementeConexo = "Sim";
+    this.possuiCaminhoEuleriano = "Não";
+    this.possuiCicloEuleriano = "Não";
     this.somaGraus = 0;
     this.quantidadeGrausImpares = 0;
 
     let regularValidator = true;
-
+    let cicloEulerianoValidator = true;
     this.vertices.forEach(vertice => {
-      if (this.vertices.every(ver => vertice.connections.includes(ver.label) || vertice.label === ver.label)) {
-        this.isConexo = "Sim";
-      }
-      else {
-        this.isFortementeConexo = "Não";
-      }
+
+      if (this.vertices.length !== 1 && (this.vertices.every(ver => vertice.connections.includes(ver.label) || vertice.label === ver.label))) this.isConexo = "Sim";
+      else this.isFortementeConexo = "Não";
+
       if (vertice.connections.length !== this.vertices[0].connections.length || this.vertices[0].connections.length === 0) regularValidator = false;
+
       this.somaGraus += vertice.connections.length + vertice.selfConnectionCounter;
-      if ((vertice.connections.length + vertice.selfConnectionCounter) % 2 === 1) this.quantidadeGrausImpares++;
+      if ((vertice.connections.length + vertice.selfConnectionCounter) % 2 === 1) {
+        this.quantidadeGrausImpares++;
+        cicloEulerianoValidator = false;
+      }
+      else if (vertice.connections.length === 0) cicloEulerianoValidator = false;
     });
+
     this.isRegular = (this.somaGraus % this.vertices.length === 0) && regularValidator ? "Sim" : "Não";
-    if (this.vertices.length === 1) {
-      this.isConexo = "Não";
-      this.isFortementeConexo = "Não";
-    }
+
+    if (this.isConexo && (this.quantidadeGrausImpares === 2 || this.quantidadeGrausImpares === 0)) this.possuiCaminhoEuleriano = "Sim";
+    if (this.isConexo && cicloEulerianoValidator) this.possuiCicloEuleriano = "Sim";
   }
 
 }

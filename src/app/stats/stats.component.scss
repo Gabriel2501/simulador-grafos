@@ -14,7 +14,7 @@
 
     margin: 0 5% 5% 5%;
 
-    mat-form-field{
+    mat-form-field {
         width: 100%;
         height: 100%;
     }
@@ -24,7 +24,7 @@
     width: 50%;
     height: 5%;
 
-    button{
+    button {
         width: 100%;
         height: 100%;
     }
@@ -41,4 +41,8 @@
 
 .icone {
     margin-left: 2%;
+}
+
+mat-list-item {
+    height: 35px !important;
 }
