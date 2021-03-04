@@ -262,5 +262,6 @@ export class StatsService {
       let connectionIndex = this.vertices[index].connections.findIndex(label => label === label2);
       if (connectionIndex != -1) this.vertices[index].connections.splice(connectionIndex, 1);
     }
+    if (label1 === label2) this.vertices[index].selfConnectionCounter = 0;
   }
 }
