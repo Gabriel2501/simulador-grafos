@@ -3,7 +3,7 @@
         <div *ngFor="let vertice of vertices"
             [ngStyle]="{'position': 'absolute', 'margin-left': vertice.offsetX+'px', 'margin-top': vertice.offsetY+'px','z-index':'5'}">
             <button [id]="'id'+vertice.id" mat-fab (click)="selecionarVertice(vertice, $event)"
-                (contextmenu)="removerVertice(vertice)" [matBadge]="vertice.connections.length"
+                (contextmenu)="removerVertice(vertice)" [matBadge]="vertice.connections.length + vertice.selfConnectionCounter"
                 [matBadgeHidden]="!visibilidadeGraus">
                 {{vertice?.label}}
             </button>

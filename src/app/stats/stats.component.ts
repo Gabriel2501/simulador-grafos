@@ -98,8 +98,8 @@ export class StatsComponent implements OnInit {
 
     this.vertices.forEach(vertice => {
       if (vertice.connections.length !== this.vertices[0].connections.length || this.vertices[0].connections.length === 0) regularValidator = false;
-      this.somaGraus += vertice.connections.length;
-      if (vertice.connections.length % 2 === 1) this.quantidadeGrausImpares++;
+      this.somaGraus += vertice.connections.length + vertice.selfConnectionCounter;
+      if ((vertice.connections.length + vertice.selfConnectionCounter) % 2 === 1) this.quantidadeGrausImpares++;
     });
     this.isRegular = (this.somaGraus % this.vertices.length === 0) && regularValidator ? "Sim" : "Não";
   }

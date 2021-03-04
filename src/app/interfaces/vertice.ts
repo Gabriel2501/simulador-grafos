@@ -7,5 +7,6 @@ export interface IVertice {
     offsetX: number,
     offsetY: number,
     isSelected?: boolean,
-    isHighlighted?: boolean
+    isHighlighted?: boolean,
+    selfConnectionCounter: number
 }

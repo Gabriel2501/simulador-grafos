@@ -95,7 +95,8 @@ export class StatsService {
         label: tempLabel,
         connections: [],
         offsetX: offsetX,
-        offsetY: offsetY
+        offsetY: offsetY,
+        selfConnectionCounter: 0
       }
     );
 
@@ -122,6 +123,7 @@ export class StatsService {
     if (!vertice2) {
       if (!vertice1.connections.includes(vertice1.label)) {
         vertice1.connections.push(vertice1.label);
+        vertice1.selfConnectionCounter = 1;
         this.arestas.push(
           {
             id: this.arestas.length + this.arestasRemovidas,

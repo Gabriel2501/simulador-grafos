@@ -33,7 +33,7 @@ export class MainComponent implements OnInit {
     this.vertices$.subscribe(vertices => {
       this.vertices = vertices;
       this.vertices.forEach(vertice => {
-        vertice.isHighlighted = this.visibilidadeGrausImpares && (vertice.connections.length % 2 === 1);
+        vertice.isHighlighted = this.visibilidadeGrausImpares && ((vertice.connections.length + vertice.selfConnectionCounter) % 2 === 1);
         if (vertice.isHighlighted) document.querySelector(`#id${vertice.id}`)?.classList.add("highlighted");
         else document.querySelector(`#id${vertice.id}`)?.classList.remove("highlighted");
       });
