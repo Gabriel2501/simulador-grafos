@@ -1,15 +1,17 @@
 <div id="content-container" (click)="novoVertice($event)" (contextmenu)="$event.preventDefault();">
     <div *ngIf="vertices$ | async">
         <div *ngFor="let vertice of vertices"
-            [ngStyle]="{'position': 'absolute', 'margin-left': vertice.offsetX+'px', 'margin-top': vertice.offsetY+'px','z-index':'1'}">
-            <button [id]="'id'+vertice.id" mat-fab (click)="selecionarVertice(vertice)"
-                (contextmenu)="removerVertice(vertice)" [matBadge]="vertice.connections.length" [matBadgeHidden]="!visibilidadeGraus">
+            [ngStyle]="{'position': 'absolute', 'margin-left': vertice.offsetX+'px', 'margin-top': vertice.offsetY+'px','z-index':'5'}">
+            <button [id]="'id'+vertice.id" mat-fab (click)="selecionarVertice(vertice, $event)"
+                (contextmenu)="removerVertice(vertice)" [matBadge]="vertice.connections.length"
+                [matBadgeHidden]="!visibilidadeGraus">
                 {{vertice?.label}}
             </button>
         </div>
     </div>
     <div *ngIf="arestas$ | async as arestas">
-        <div *ngFor="let aresta of arestas" (contextmenu)="removerAresta(aresta)" [ngStyle]="{
+        <div *ngFor="let aresta of arestas">
+            <div *ngIf="aresta.labelVertice1 != aresta.labelVertice2" (contextmenu)="removerAresta(aresta)" [ngStyle]="{
                 'position': 'absolute', 
                 'transform': 'rotate(-'+aresta.angulo+'deg)',
                 'transform-origin': aresta.transformOrigin,
@@ -19,8 +21,31 @@
                 'height': '5px', 
                 'background-color': 'black', 
                 'cursor': 'pointer',
-                'z-index': '0'
-            }">
+                'z-index': '4'
+            }"></div>
+
+            <div *ngIf="aresta.labelVertice1 == aresta.labelVertice2" (contextmenu)="removerAresta(aresta)" [ngStyle]="{
+                'position': 'absolute', 
+                'border-radius': '50%',
+                'margin-left': 'calc('+(aresta.offsetX + aresta.additionalOffsetX)+'px - 20px)', 
+                'margin-top': 'calc('+(aresta.offsetY + aresta.additionalOffsetY)+'px - 20px)', 
+                'width': '50px', 
+                'height': '50px', 
+                'background-color': 'black', 
+                'cursor': 'pointer',
+                'z-index': '2'
+            }"> </div>
+
+            <div *ngIf="aresta.labelVertice1 == aresta.labelVertice2" [ngStyle]="{
+                'position': 'absolute', 
+                'border-radius': '50%',
+                'margin-left': 'calc('+(aresta.offsetX + aresta.additionalOffsetX)+'px - 15px)', 
+                'margin-top': 'calc('+(aresta.offsetY + aresta.additionalOffsetY)+'px - 15px)', 
+                'width': '40px', 
+                'height': '40px', 
+                'background-color': '#eee', 
+                'cursor': 'arrow',
+                'z-index': '3'
+            }"> </div>
         </div>
     </div>
-</div>

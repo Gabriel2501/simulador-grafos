@@ -25,6 +25,7 @@ export class StatsComponent implements OnInit {
   public vertices: IVertice[];
   public arestas: IAresta[];
 
+  public isRegular: string;
   public somaGraus: number;
   public quantidadeGrausImpares: number;
 
@@ -43,6 +44,7 @@ export class StatsComponent implements OnInit {
     this.vertices = [];
     this.arestas = [];
 
+    this.isRegular = "Não";
     this.somaGraus = 0;
     this.quantidadeGrausImpares = 0;
 
@@ -91,10 +93,15 @@ export class StatsComponent implements OnInit {
   updateStats() {
     this.somaGraus = 0;
     this.quantidadeGrausImpares = 0;
+
+    let regularValidator = true;
+
     this.vertices.forEach(vertice => {
+      if (vertice.connections.length !== this.vertices[0].connections.length || this.vertices[0].connections.length === 0) regularValidator = false;
       this.somaGraus += vertice.connections.length;
       if (vertice.connections.length % 2 === 1) this.quantidadeGrausImpares++;
     });
+    this.isRegular = (this.somaGraus % this.vertices.length === 0) && regularValidator ? "Sim" : "Não";
   }
 
 }

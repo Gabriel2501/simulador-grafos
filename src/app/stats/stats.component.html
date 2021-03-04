@@ -21,6 +21,10 @@
                 Número total de Arestas: {{arestas.length}}
             </mat-list-item>
 
+            <mat-list-item role="listitem" *ngIf="arestas">
+                É Grafo Regular? {{isRegular}}
+            </mat-list-item>
+
             <mat-list-item role="listitem">
                 Soma dos graus dos Vértices: {{somaGraus}}
             </mat-list-item>

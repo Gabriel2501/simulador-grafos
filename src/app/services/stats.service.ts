@@ -118,76 +118,98 @@ export class StatsService {
     this.update();
   }
 
-  adicionarAresta(vertice1: IVertice, vertice2: IVertice) {
-    let index1: number, index2: number;
-    index1 = this.vertices.findIndex(vertice => vertice.id === vertice1.id);
-    index2 = this.vertices.findIndex(vertice => vertice.id === vertice2.id);
-
-    if (index1 != -1 && index2 != -1) {
-      if (!this.arestas.find(aresta => aresta.labelVertice1 == this.vertices[index1].label && aresta.labelVertice2 == this.vertices[index2].label)) {
-
-        let conexaoReversa = this.arestas.findIndex(aresta => aresta.labelVertice1 == this.vertices[index2].label && aresta.labelVertice2 == this.vertices[index1].label);
-
-        this.vertices[index1].connections?.push(this.vertices[index2].label);
-        this.vertices[index2].connections?.push(this.vertices[index1].label);
-
-        let initialX, initialY, finalX, finalY, angulo, comprimento, transformOrigin, additionalOffsetX = 0, additionalOffsetY = 0;
-        initialX = this.vertices[index1].offsetX;
-        initialY = this.vertices[index1].offsetY;
-
-        finalX = this.vertices[index2].offsetX;
-        finalY = this.vertices[index2].offsetY;
-
-        if ((finalX - initialX) != 0) {
-          angulo = (finalY - initialY) / (finalX - initialX);
-          angulo = 360 - (Math.atan(angulo) * 180 / Math.PI);
-        }
-        else {
-          angulo = (finalY > initialY) ? 90 : 270;
-        }
-
-
-        if (this.vertices[index1].offsetX >= this.vertices[index2].offsetX) {
-          initialX = this.vertices[index2].offsetX;
-          initialY = this.vertices[index2].offsetY;
-
-          finalX = this.vertices[index1].offsetX;
-          finalY = this.vertices[index1].offsetY;
-        }
-
-        transformOrigin = (this.vertices[index1].offsetY < this.vertices[index2].offsetY) ? "left top" : "left bottom";
-        comprimento = Math.sqrt((Math.pow(finalX - initialX, 2)) + (Math.pow(finalY - initialY, 2)));
-
-        if (conexaoReversa != -1) {
-          if (((vertice1.offsetX / vertice2.offsetX > vertice1.offsetY / vertice2.offsetY) && (vertice1.offsetX / vertice2.offsetX) != 1) || (vertice1.offsetY / vertice2.offsetY) == 1) {
-            additionalOffsetX = 0;
-            additionalOffsetY = 5;
-            this.arestas[conexaoReversa].additionalOffsetX = 0;
-            this.arestas[conexaoReversa].additionalOffsetY = -5;
-          }
-          else {
-            additionalOffsetX = 5;
-            additionalOffsetY = 0;
-            this.arestas[conexaoReversa].additionalOffsetX = -5;
-            this.arestas[conexaoReversa].additionalOffsetY = 0;
-          }
-        }
-
+  adicionarAresta(vertice1: IVertice, vertice2?: IVertice) {
+    if (!vertice2) {
+      if (!vertice1.connections.includes(vertice1.label)) {
+        vertice1.connections.push(vertice1.label);
         this.arestas.push(
           {
             id: this.arestas.length + this.arestasRemovidas,
-            labelVertice1: this.vertices[index1].label,
-            labelVertice2: this.vertices[index2].label,
-            offsetX: initialX,
-            offsetY: initialY,
-            additionalOffsetX: additionalOffsetX,
-            additionalOffsetY: additionalOffsetY,
-            angulo: angulo,
-            comprimento: comprimento,
-            transformOrigin: transformOrigin
+            labelVertice1: vertice1.label,
+            labelVertice2: vertice1.label,
+            offsetX: vertice1.offsetX,
+            offsetY: vertice1.offsetY,
+            additionalOffsetX: 0,
+            additionalOffsetY: 0,
+            angulo: 0,
+            comprimento: 50,
+            transformOrigin: ""
           }
         );
         this.update();
+      }
+    }
+    else {
+      let index1: number, index2: number;
+      index1 = this.vertices.findIndex(vertice => vertice.id === vertice1.id);
+      index2 = this.vertices.findIndex(vertice => vertice.id === vertice2.id);
+
+      if (index1 != -1 && index2 != -1) {
+        if (!this.arestas.find(aresta => aresta.labelVertice1 == this.vertices[index1].label && aresta.labelVertice2 == this.vertices[index2].label)) {
+
+          let conexaoReversa = this.arestas.findIndex(aresta => aresta.labelVertice1 == this.vertices[index2].label && aresta.labelVertice2 == this.vertices[index1].label);
+
+          this.vertices[index1].connections?.push(this.vertices[index2].label);
+          this.vertices[index2].connections?.push(this.vertices[index1].label);
+
+          let initialX, initialY, finalX, finalY, angulo, comprimento, transformOrigin, additionalOffsetX = 0, additionalOffsetY = 0;
+          initialX = this.vertices[index1].offsetX;
+          initialY = this.vertices[index1].offsetY;
+
+          finalX = this.vertices[index2].offsetX;
+          finalY = this.vertices[index2].offsetY;
+
+          if ((finalX - initialX) != 0) {
+            angulo = (finalY - initialY) / (finalX - initialX);
+            angulo = 360 - (Math.atan(angulo) * 180 / Math.PI);
+          }
+          else {
+            angulo = (finalY > initialY) ? 90 : 270;
+          }
+
+
+          if (this.vertices[index1].offsetX >= this.vertices[index2].offsetX) {
+            initialX = this.vertices[index2].offsetX;
+            initialY = this.vertices[index2].offsetY;
+
+            finalX = this.vertices[index1].offsetX;
+            finalY = this.vertices[index1].offsetY;
+          }
+
+          transformOrigin = (this.vertices[index1].offsetY < this.vertices[index2].offsetY) ? "left top" : "left bottom";
+          comprimento = Math.sqrt((Math.pow(finalX - initialX, 2)) + (Math.pow(finalY - initialY, 2)));
+
+          if (conexaoReversa != -1) {
+            if (((vertice1.offsetX / vertice2.offsetX > vertice1.offsetY / vertice2.offsetY) && (vertice1.offsetX / vertice2.offsetX) != 1) || (vertice1.offsetY / vertice2.offsetY) == 1) {
+              additionalOffsetX = 0;
+              additionalOffsetY = 5;
+              this.arestas[conexaoReversa].additionalOffsetX = 0;
+              this.arestas[conexaoReversa].additionalOffsetY = -5;
+            }
+            else {
+              additionalOffsetX = 5;
+              additionalOffsetY = 0;
+              this.arestas[conexaoReversa].additionalOffsetX = -5;
+              this.arestas[conexaoReversa].additionalOffsetY = 0;
+            }
+          }
+
+          this.arestas.push(
+            {
+              id: this.arestas.length + this.arestasRemovidas,
+              labelVertice1: this.vertices[index1].label,
+              labelVertice2: this.vertices[index2].label,
+              offsetX: initialX,
+              offsetY: initialY,
+              additionalOffsetX: additionalOffsetX,
+              additionalOffsetY: additionalOffsetY,
+              angulo: angulo,
+              comprimento: comprimento,
+              transformOrigin: transformOrigin
+            }
+          );
+          this.update();
+        }
       }
     }
   }

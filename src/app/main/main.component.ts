@@ -55,24 +55,28 @@ export class MainComponent implements OnInit {
     if (event.target.id === "content-container") this._statsService.adicionarVertice(event.offsetX - 25, event.offsetY - 25);
   }
 
-  selecionarVertice(vertice: IVertice) {
-    vertice.isSelected = !vertice.isSelected;
-    if (vertice.isSelected) {
-      document.querySelector("#id" + vertice.id)?.classList.add("selected");
-      this.verticesSelecionados.push(vertice);
+  selecionarVertice(vertice: IVertice, event?: MouseEvent) {
+    if (event?.ctrlKey) {
+      this._statsService.adicionarAresta(vertice);
     }
     else {
-      this.verticesSelecionados.splice(this.verticesSelecionados.indexOf(vertice), 1);
-      document.querySelector("#id" + vertice.id)?.classList.remove("selected");
-    }
-    if (this.verticesSelecionados.length === 2) {
-      this.verticesSelecionados[0].isSelected = false;
-      this.verticesSelecionados[1].isSelected = false;
-      document.querySelector("#id" + this.verticesSelecionados[0].id)?.classList.remove("selected");
-      document.querySelector("#id" + this.verticesSelecionados[1].id)?.classList.remove("selected");
-      this._statsService.adicionarAresta(this.verticesSelecionados[0], this.verticesSelecionados[1]);
-      this.verticesSelecionados = [];
-
+      vertice.isSelected = !vertice.isSelected;
+      if (vertice.isSelected) {
+        document.querySelector("#id" + vertice.id)?.classList.add("selected");
+        this.verticesSelecionados.push(vertice);
+      }
+      else {
+        this.verticesSelecionados.splice(this.verticesSelecionados.indexOf(vertice), 1);
+        document.querySelector("#id" + vertice.id)?.classList.remove("selected");
+      }
+      if (this.verticesSelecionados.length === 2) {
+        this.verticesSelecionados[0].isSelected = false;
+        this.verticesSelecionados[1].isSelected = false;
+        document.querySelector("#id" + this.verticesSelecionados[0].id)?.classList.remove("selected");
+        document.querySelector("#id" + this.verticesSelecionados[1].id)?.classList.remove("selected");
+        this._statsService.adicionarAresta(this.verticesSelecionados[0], this.verticesSelecionados[1]);
+        this.verticesSelecionados = [];
+      }
     }
   }
 
