@@ -1,0 +1,35 @@
+<h1 mat-dialog-title>Como utilizar o simulador:</h1>
+<div mat-dialog-content>
+    <mat-list role="list">
+
+        <mat-list-item role="listitem">
+            <p>
+                <b>Clique esquerdo (no painel): </b> Inserção de novo vértice. O nome do vértice será o mesmo que estiver
+                no campo à esquerda, caso o mesmo esteja preenchido. Caso contrário, será gerado um nome automaticamente.
+            </p>
+        </mat-list-item>
+
+        <mat-list-item role="listitem">
+            <p><b>Clique esquerdo (no vértice):</b>
+
+                Seleciona o vértice. Ao selecionar dois vértices, uma aresta entre eles é
+                criada. Ao selecionar o mesmo vértice duas vezes, a seleção é desfeita.
+            </p>
+        </mat-list-item>
+
+        <mat-list-item role="listitem">
+            <p>
+                <b>CTRL + clique esquerdo (no vértice): </b> Cria um laço (aresta que liga o vértice com ele mesmo).
+            </p>
+        </mat-list-item>
+
+        <mat-list-item role="listitem">
+            <p>
+                <b>Clique direito (no vértice ou na aresta):</b> Remoção do elemento clicado.
+            </p>
+        </mat-list-item>
+    </mat-list>
+</div>
+<div mat-dialog-actions>
+    <button mat-button mat-dialog-close>Fechar</button>
+</div>

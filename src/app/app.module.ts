@@ -9,13 +9,15 @@ import { StatsComponent } from './stats/stats.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { NavbarComponent } from './navbar/navbar.component';
+import { HelpComponent } from './help/help.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MainComponent,
     StatsComponent,
-    NavbarComponent
+    NavbarComponent,
+    HelpComponent
   ],
   imports: [
     BrowserModule,

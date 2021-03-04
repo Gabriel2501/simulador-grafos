@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatBadgeModule } from '@angular/material/badge';
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { MatBadgeModule } from '@angular/material/badge';
     MatIconModule,
     MatListModule,
     MatToolbarModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatDialogModule
   ],
   exports: [
     MatGridListModule,
@@ -29,7 +31,8 @@ import { MatBadgeModule } from '@angular/material/badge';
     MatIconModule,
     MatListModule,
     MatToolbarModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatDialogModule
   ]
 })
 export class AngularMaterialModule { }
