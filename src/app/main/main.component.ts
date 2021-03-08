@@ -15,6 +15,7 @@ export class MainComponent implements OnInit {
   public arestas$: Observable<IAresta[]>;
 
   public vertices: IVertice[];
+  private listaArestas: IAresta[];
 
   public visibilidadeGraus: boolean;
   private visibilidadeGrausImpares: boolean;
@@ -26,6 +27,7 @@ export class MainComponent implements OnInit {
     this.visibilidadeGrausImpares = false;
     this.verticesSelecionados = [];
     this.vertices = [];
+    this.listaArestas = [];
 
     this.vertices$ = this._statsService.getVertices();
     this.arestas$ = this._statsService.getArestas();
@@ -38,6 +40,8 @@ export class MainComponent implements OnInit {
         else document.querySelector(`#id${vertice.id}`)?.classList.remove("highlighted");
       });
     });
+
+    this.arestas$.subscribe(arestas => this.listaArestas = arestas);
 
     this._statsService.getVisibilidadeGraus().subscribe(visibilidade => {
       this.visibilidadeGraus = visibilidade;
@@ -87,5 +91,21 @@ export class MainComponent implements OnInit {
 
   removerAresta(aresta: IAresta) {
     this._statsService.removerAresta(aresta);
+  }
+
+  getVerticeStats(vertice: IVertice) {
+    return `Vértices Adjacentes: ${vertice.connections.length ? vertice.connections : "Nenhuma"} `;
+  }
+
+  getArestaStats(aresta: IAresta) {
+    let arestasAdjacentes = this.listaArestas.filter(ar =>
+      ((ar.labelVertice1 === aresta.labelVertice1 || ar.labelVertice1 === aresta.labelVertice2
+        ||
+        (ar.labelVertice2 === aresta.labelVertice2) || ar.labelVertice2 === aresta.labelVertice1))
+      &&
+      !(ar.labelVertice1 === aresta.labelVertice1 && ar.labelVertice2 === aresta.labelVertice2)
+    );
+    let adjacencias = arestasAdjacentes.map(adj => `(${adj.labelVertice1},${adj.labelVertice2})`);
+    return `Arestas Adjacentes: ${adjacencias.length ? adjacencias : "Nenhuma"}`;
   }
 }

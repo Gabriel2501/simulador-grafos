@@ -3,15 +3,17 @@
         <div *ngFor="let vertice of vertices"
             [ngStyle]="{'position': 'absolute', 'margin-left': vertice.offsetX+'px', 'margin-top': vertice.offsetY+'px','z-index':'5'}">
             <button [id]="'id'+vertice.id" mat-fab (click)="selecionarVertice(vertice, $event)"
-                (contextmenu)="removerVertice(vertice)" [matBadge]="vertice.connections.length + vertice.selfConnectionCounter"
-                [matBadgeHidden]="!visibilidadeGraus">
+                (contextmenu)="removerVertice(vertice)"
+                [matBadge]="vertice.connections.length + vertice.selfConnectionCounter"
+                [matBadgeHidden]="!visibilidadeGraus" [matTooltip]="getVerticeStats(vertice)" matTooltipShowDelay="500">
                 {{vertice?.label}}
             </button>
         </div>
     </div>
     <div *ngIf="arestas$ | async as arestas">
         <div *ngFor="let aresta of arestas">
-            <div *ngIf="aresta.labelVertice1 != aresta.labelVertice2" (contextmenu)="removerAresta(aresta)" [ngStyle]="{
+            <div *ngIf="aresta.labelVertice1 != aresta.labelVertice2" (contextmenu)="removerAresta(aresta)"
+                [matTooltip]="getArestaStats(aresta)" matTooltipShowDelay="500" [ngStyle]="{
                 'position': 'absolute', 
                 'transform': 'rotate(-'+aresta.angulo+'deg)',
                 'transform-origin': aresta.transformOrigin,
@@ -24,7 +26,8 @@
                 'z-index': '4'
             }"></div>
 
-            <div *ngIf="aresta.labelVertice1 == aresta.labelVertice2" (contextmenu)="removerAresta(aresta)" [ngStyle]="{
+            <div *ngIf="aresta.labelVertice1 == aresta.labelVertice2" (contextmenu)="removerAresta(aresta)"
+                [matTooltip]="getArestaStats(aresta)" matTooltipShowDelay="500" [ngStyle]="{
                 'position': 'absolute', 
                 'border-radius': '50%',
                 'margin-left': 'calc('+(aresta.offsetX + aresta.additionalOffsetX)+'px - 20px)', 
