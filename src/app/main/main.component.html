@@ -12,6 +12,7 @@
     </div>
     <div *ngIf="arestas$ | async as arestas">
         <div *ngFor="let aresta of arestas">
+            <!-- Desenho da Aresta entre dois vértices -->
             <div *ngIf="aresta.labelVertice1 != aresta.labelVertice2" (contextmenu)="removerAresta(aresta)"
                 [matTooltip]="getArestaStats(aresta)" matTooltipShowDelay="500" [ngStyle]="{
                 'position': 'absolute', 
@@ -26,6 +27,7 @@
                 'z-index': '4'
             }"></div>
 
+            <!-- Desenho da aresta entre o próprio vértice -->
             <div *ngIf="aresta.labelVertice1 == aresta.labelVertice2" (contextmenu)="removerAresta(aresta)"
                 [matTooltip]="getArestaStats(aresta)" matTooltipShowDelay="500" [ngStyle]="{
                 'position': 'absolute', 
@@ -39,6 +41,7 @@
                 'z-index': '2'
             }"> </div>
 
+            <!-- Desenho do buraco no círculo da aresta entre o próprio vértice -->
             <div *ngIf="aresta.labelVertice1 == aresta.labelVertice2" [ngStyle]="{
                 'position': 'absolute', 
                 'border-radius': '50%',
