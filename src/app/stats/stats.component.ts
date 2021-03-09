@@ -27,7 +27,6 @@ export class StatsComponent implements OnInit {
 
   public isRegular: string;
   public isConexo: string;
-  public isFortementeConexo: string;
   public possuiCaminhoEuleriano: string;
   public possuiCicloEuleriano: string;
   public somaGraus: number;
@@ -50,7 +49,6 @@ export class StatsComponent implements OnInit {
 
     this.isRegular = "Não";
     this.isConexo = "Não";
-    this.isFortementeConexo = "Não";
     this.possuiCaminhoEuleriano = "Não";
     this.possuiCicloEuleriano = "Não";
     this.somaGraus = 0;
@@ -100,7 +98,6 @@ export class StatsComponent implements OnInit {
 
   updateStats() {
     this.isConexo = "Não";
-    this.isFortementeConexo = "Sim";
     this.possuiCaminhoEuleriano = "Não";
     this.possuiCicloEuleriano = "Não";
     this.somaGraus = 0;
@@ -109,24 +106,42 @@ export class StatsComponent implements OnInit {
     let regularValidator = true;
     let cicloEulerianoValidator = true;
     this.vertices.forEach(vertice => {
-
-      if (this.vertices.length !== 1 && (this.vertices.every(ver => vertice.connections.includes(ver.label) || vertice.label === ver.label))) this.isConexo = "Sim";
-      else this.isFortementeConexo = "Não";
+      let conexoes = vertice.connections.length + vertice.selfConnectionCounter;
+      //Soma dos graus dos vértices
+      this.somaGraus += conexoes;
 
       if (vertice.connections.length !== this.vertices[0].connections.length || this.vertices[0].connections.length === 0) regularValidator = false;
 
-      this.somaGraus += vertice.connections.length + vertice.selfConnectionCounter;
-      if ((vertice.connections.length + vertice.selfConnectionCounter) % 2 === 1) {
+      if (conexoes % 2 === 1) {
         this.quantidadeGrausImpares++;
         cicloEulerianoValidator = false;
       }
-      else if (vertice.connections.length === 0) cicloEulerianoValidator = false;
+      else if (conexoes === 0) cicloEulerianoValidator = false;
     });
+
+    if (this.vertices.some(vertice => this.verificarConexo(vertice))) {
+      this.isConexo = "Sim";
+    }
 
     this.isRegular = (this.somaGraus % this.vertices.length === 0) && regularValidator ? "Sim" : "Não";
 
-    if (this.isConexo && (this.quantidadeGrausImpares === 2 || this.quantidadeGrausImpares === 0)) this.possuiCaminhoEuleriano = "Sim";
-    if (this.isConexo && cicloEulerianoValidator) this.possuiCicloEuleriano = "Sim";
+    if (this.isConexo === "Sim" && (this.quantidadeGrausImpares === 2 || this.quantidadeGrausImpares === 0)) this.possuiCaminhoEuleriano = "Sim";
+    if (this.isConexo === "Sim" && cicloEulerianoValidator) this.possuiCicloEuleriano = "Sim";
   }
 
+  verificarConexo(v: IVertice, verificados?: string[], nivel?: number): boolean {
+    verificados = verificados ?? [];
+    nivel = nivel ?? 0;
+
+    verificados.push(v.label);
+    nivel++;
+
+    if (v.connections.length !== 0 && v.connections.some(connection => !verificados?.includes(connection))) {
+      let remainingConnections = v.connections.filter(connection => !verificados?.includes(connection));
+      return remainingConnections.some(connection => this.verificarConexo(this.vertices[this.vertices.findIndex(vertice => vertice.label === connection)], verificados, nivel));
+    }
+    else {
+      return this.vertices.every(vertice => verificados?.includes(vertice.label));
+    }
+  }
 }
